@@ -27,8 +27,8 @@ public class AiliaTrackerModel {
 
     bool logging = true;
 
-    public bool Create(int algorithm, AiliaTracker.AILIATrackerSettings settings){
-        int status = AiliaTracker.ailiaTrackerCreate(ref ailia_tracker, algorithm, settings, AiliaTracker.AILIA_TRACKER_SETTINGS_VERSION);
+    public bool Create(int algorithm, AiliaTracker.AILIATrackerSettings settings, int flags = AiliaTracker.AILIA_TRACKER_FLAG_NONE){
+        int status = AiliaTracker.ailiaTrackerCreate(ref ailia_tracker, algorithm, settings, AiliaTracker.AILIA_TRACKER_SETTINGS_VERSION, flags);
 
         if(status!=Ailia.AILIA_STATUS_SUCCESS){
             if(logging){
@@ -45,13 +45,9 @@ public class AiliaTrackerModel {
 
         int status = 0;
 
-        //if (ailiaDetectorObjectList.Count == 0){
-        //    return null;
-        //}
-
-
         for (int i = 0; i < ailiaDetectorObjectList.Count; i++){
-            status = AiliaTracker.ailiaTrackerAddTarget(ailia_tracker, ailiaDetectorObjectList[i]);
+            AiliaDetector.AILIADetectorObject detectorObj = ailiaDetectorObjectList[i];
+            status = AiliaTracker.ailiaTrackerAddTarget(ailia_tracker, detectorObj, AiliaDetector.AILIA_DETECTOR_OBJECT_VERSION);
             if (status != Ailia.AILIA_STATUS_SUCCESS) {
                 if(logging){
                     Debug.Log("ailiaTrackerAddTarget failed "+status);
