@@ -146,42 +146,70 @@ public class AiliaTracker
     {
         /**
         * \~japanese
-        * Score threshold to filter the result default=0.1
+        * 検出結果を有効とみなすスコア（信頼度）の下限値です。  
+        * この値より小さいスコアの検出は無視されます。  
+        * デフォルト値：0.1
         *
         * \~english
-        * Score threshold to filter the result default=0.1
+        * Minimum confidence score to accept a detection result.  
+        * Detections with scores below this value are ignored.  
+        * Default: 0.1
         */
         public float score_threshold;
         /**
         * \~japanese
-        * NMS threshold default=0.7
+        * 重複する検出を除去するための NMS（非最大抑制）しきい値です。  
+        * Intersection over Union (IoU) がこの値を超える検出結果は重複として統合されます。  
+        * デフォルト値：0.7
         *
         * \~english
-        * NMS threshold default=0.7
+        * Non‑Maximum Suppression (NMS) threshold used to remove duplicate detections.  
+        * Detections whose Intersection over Union (IoU) exceeds this value are merged.  
+        * Default: 0.7
         */
         public float nms_threshold;
         /**
         * \~japanese
-        * tracking confidence threshold default=0.5
+        * トラッキング対象として更新に使用する検出スコアのしきい値です。  
+        * 通常はこの値以上のスコアを持つ検出のみでトラックを更新しますが、  
+        * ByteTrack の手法では、より低いスコア（`score_threshold` 以上～この値未満）の検出であっても  
+        * IoU によるマッチングが成立した場合は補助的にトラック更新に利用されることがあります。  
+        * 値を高くすると厳密な追跡となり、低くすると一時的に信頼度が下がった物体も追跡しやすくなります。  
+        * デフォルト値：0.5
         *
         * \~english
-        * tracking confidence threshold default=0.5
+        * Confidence threshold for updating active tracks.  
+        * Normally, only detections with scores above this value are used to update existing tracks.  
+        * However, in the ByteTrack approach, detections with lower scores (between `score_threshold` and this value)  
+        * may also be used for updates if they achieve sufficient IoU matching with existing tracks.  
+        * A higher value makes the tracking stricter, while a lower value allows objects with temporarily low confidence to be maintained.  
+        * Default: 0.5
         */
         public float track_threshold;
         /**
         * \~japanese
-        * the frames for keep lost tracks default=30
+        * 見失ったトラック情報を保持しておく最大フレーム数です。  
+        * この間に同一物体を再検出できた場合、トラッキングを再開します。  
+        * デフォルト値：30
         *
         * \~english
-        * the frames for keep lost tracks default=30
+        * Maximum number of frames to keep lost tracks in memory.  
+        * If the same object is detected again within this period, tracking is resumed.  
+        * Default: 30
         */
         public int track_buffer;
         /**
         * \~japanese
-        * matching threshold for tracking default=0.8
+        * フレーム間での物体対応付け（マッチング）を行う際の IoU しきい値です。  
+        * IoU がこの値以上の場合、同一物体としてマッチングされます。  
+        * 値を大きくするとマッチングが厳密になります。  
+        * デフォルト値：0.8
         *
         * \~english
-        * matching threshold for tracking default=0.8
+        * IoU threshold used for matching objects between frames.  
+        * Detections with an IoU greater than or equal to this value are treated as the same object.  
+        * Higher values make the matching stricter.  
+        * Default: 0.8
         */
         public float match_threshold;
     }
@@ -204,11 +232,11 @@ public class AiliaTracker
     /**
     * \~japanese
     * @def AILIA_TRACKER_FLAG_ALLOW_WIDE_ASPECT_RATIO
-    * @brief 人物のトラッキングのために縦横比が1.6未満の場合はトラッキング対象外にする判定を無効にします、車のトラッキングなどで有効です
+    * @brief 通常、人物トラッキングでは縦横比（幅／高さ）が 1.6 以上の物体は無視されます。このフラグを有効にすると、その制限を解除します。車など横長の物体をトラッキングする場合に有効です。
     *
     * \~english
     * @def AILIA_TRACKER_FLAG_ALLOW_WIDE_ASPECT_RATIO
-    * @brief Disable the rule that excludes targets from tracking when the aspect ratio is less than 1.6 for person tracking; this is useful for tracking cars and similar objects.
+    * @brief By default, targets with an aspect ratio (width / height) greater than 1.6 are ignored in person tracking. Enabling this flag disables that restriction, making it suitable for tracking wide objects such as cars.
     */
     public const int AILIA_TRACKER_FLAG_ALLOW_WIDE_ASPECT_RATIO = (1);
 
