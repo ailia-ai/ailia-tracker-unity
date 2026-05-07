@@ -10,4 +10,4 @@ ailia Tracker is a library for tracking the movement of objects based on object 
 
 ## API specification
 
-https://github.com/axinc-ai/ailia-sdk
+https://github.com/ailia-ai/ailia-sdk
